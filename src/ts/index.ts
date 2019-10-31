@@ -1,18 +1,17 @@
 require('../scss/main.scss');
+
+// example code, can be deleted entirely
 import { HelloWorld } from './modules/hello-world-module';
 
 class Main {
   public helloWorld: HelloWorld = new HelloWorld();
-  public asdf: Function = () => {
-    console.log('I work');
-  }
   
   constructor (
     private printMessage: string
   ) {
     this.writeToDocument();
     this.callMethodFromOtherModule();
-    this.asdf();
+
   }
 
   writeToDocument(): void {

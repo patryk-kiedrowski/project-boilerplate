@@ -1,10 +1,11 @@
+require("@babel/polyfill");
 const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
-  // the path to main js / ts file
-  entry: { 'main': './src/ts/index.ts' },
+  // the path to main js / ts file, polyfills, etc.
+  entry: ['@babel/polyfill', './src/ts/index.ts'],
 
   // the file extension webpack is going to look for when importing modules
   resolve: {
@@ -40,7 +41,10 @@ module.exports = {
       {
         test: [/\.jsx?$/, /\.tsx?$/],
         exclude: /node_modules/,
-        use: ['babel-loader'],
+        loader: 'babel-loader',
+        query: {
+          presets:['@babel/preset-env']
+        },
       }
     ]
   },

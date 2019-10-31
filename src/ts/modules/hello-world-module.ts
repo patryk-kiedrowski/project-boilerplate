@@ -1,3 +1,4 @@
+// example code, can be deleted entirely
 export class HelloWorld {
   private message: string;
 
