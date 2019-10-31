@@ -1,5 +1,15 @@
 require("@babel/polyfill");
 require("isomorphic-fetch");
+
+// image compression plugins
+const ImageminPlugin = require('imagemin-webpack-plugin').default;
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+// plugins for specific image extensions
+const imageminMozjpeg = require('imagemin-mozjpeg');
+const imageminPngquant = require('imagemin-pngquant');
+const imageminGifsicle = require('imagemin-gifsicle');
+
 const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
@@ -22,8 +32,7 @@ module.exports = {
 
   // module definitions
   module: {
-    rules: [
-      {
+    rules: [{
         test: /\.scss$/,
         use: [
           "style-loader",
@@ -44,7 +53,7 @@ module.exports = {
         exclude: /node_modules/,
         loader: 'babel-loader',
         query: {
-          presets:['@babel/preset-env']
+          presets: ['@babel/preset-env']
         },
       }
     ]
@@ -56,9 +65,41 @@ module.exports = {
       filename: 'style.css',
     }),
 
-    // removes dist folder before every building process
+    // (optional) removes dist folder before every building process
     new CleanWebpackPlugin({
       cleanAfterEveryBuildPatterns: ['dist']
+    }),
+
+    // compressess images from assets folder and copies them to the dist folder
+    new CopyWebpackPlugin([{
+      from: 'assets/**/**',
+      to: path.resolve(__dirname, 'dist'),
+      cache: true
+    }]),
+    new ImageminPlugin({
+      test: /\.(jpe?g|png|gif|svg)$/i,
+      options: {
+        optipng: null,
+        gifsicle: null,
+        svgo: null,
+        jpegtran: null
+      },
+      plugins: [
+        imageminMozjpeg({
+          quality: 65,
+          progressive: true,
+          arithmetic: false
+        }),
+        imageminPngquant({
+          quality: [0.5, 0.7],
+          floyd: 0.5,
+          speed: 2
+        }),
+        imageminGifsicle({
+          interlaced: false,
+          optimizationLevel: 2
+        })
+      ]
     })
   ]
 }

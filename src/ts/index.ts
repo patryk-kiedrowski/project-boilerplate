@@ -11,12 +11,10 @@ class Main {
   ) {
     this.writeToDocument();
     this.callMethodFromOtherModule();
-
   }
 
   writeToDocument(): void {
     document.write(`<h1>Hello ${this.printMessage}</h1>`);
-    
   }
 
   callMethodFromOtherModule(): void {
