@@ -1,11 +1,12 @@
 require("@babel/polyfill");
+require("isomorphic-fetch");
 const path = require('path');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 
 module.exports = {
   // the path to main js / ts file, polyfills, etc.
-  entry: ['@babel/polyfill', './src/ts/index.ts'],
+  entry: ['@babel/polyfill', 'isomorphic-fetch', './src/ts/index.ts'],
 
   // the file extension webpack is going to look for when importing modules
   resolve: {
